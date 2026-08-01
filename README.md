@@ -128,7 +128,3 @@ When the button is clicked, `MainWindow.xaml.cs` validates the two input fields 
 - `Microsoft.Azure.Functions.Worker` 2.1.0
 - `Microsoft.Azure.Functions.Worker.Extensions.Http` 3.3.0
 - `Microsoft.Azure.Functions.Worker.Sdk` 2.0.5 (analyzer/build SDK)
-
-## Note for real applications
-
-Hardcoded credentials and plain-text passwords are intentional only for this learning example. Production systems should use secure identity/authentication, TLS, secrets management, password hashing, authorization, and a persistent user store.
