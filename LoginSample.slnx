@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LoginClient/LoginClient.csproj" />
+  <Project Path="LoginFunction/LoginFunction.csproj" />
+</Solution>
