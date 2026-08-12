@@ -1,0 +1,33 @@
+<Page x:Class="LoginClient.Pages.FileReaderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="File / Image Reader">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="File / Image Reader" FontSize="24" FontWeight="Bold" />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,0">
+            <Button x:Name="SelectFileButton" Content="Select File" Width="120" Height="36" Margin="0,0,16,0" Click="SelectFileButton_Click" />
+            <TextBlock x:Name="SelectedFileTextBlock" VerticalAlignment="Center" Text="No file selected." TextWrapping="Wrap" Width="320" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,16,0,0">
+            <Button x:Name="UploadButton" Content="Upload / Read" Width="120" Height="36" Margin="0,0,16,0" Click="UploadButton_Click" />
+            <Button x:Name="BackButton" Content="Back" Width="120" Height="36" Click="BackButton_Click" />
+        </StackPanel>
+
+        <TextBox x:Name="OutputTextBox" Grid.Row="3" Margin="0,16,0,0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True" />
+
+        <TextBlock x:Name="StatusTextBlock" Grid.Row="4" Margin="0,12,0,0" Foreground="DarkRed" TextWrapping="Wrap" />
+    </Grid>
+</Page>

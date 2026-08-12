@@ -36,9 +36,18 @@ public partial class MainWindow : Window
                 Password = password
             });
 
-            MessageBox.Show(result.Message, "Login",
-                MessageBoxButton.OK,
-                result.Success ? MessageBoxImage.Information : MessageBoxImage.Warning);
+            if (result.Success)
+            {
+                var dashboard = new DashboardWindow();
+                dashboard.Show();
+                Close();
+            }
+            else
+            {
+                MessageBox.Show(result.Message, "Login",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
         }
         catch (HttpRequestException)
         {

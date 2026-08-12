@@ -12,6 +12,15 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.1.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.3.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.5" OutputItemType="Analyzer" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="8.0.0" />
+    <PackageReference Include="PdfPig" Version="0.1.15" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="tessdata\**\*.*" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Python Whisper transcription script — copied next to the function assembly at build time -->
+    <None Include="whisper_transcribe.py" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

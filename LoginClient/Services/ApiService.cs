@@ -1,4 +1,6 @@
+using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -18,8 +20,6 @@ public sealed class ApiService
     /// <summary>Posts credentials to POST /api/login.</summary>
     public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
-        // StringContent supplies a Content-Length header. This avoids an empty-body issue
-        // seen with chunked JSON requests in some local Functions Core Tools hosts.
         string json = JsonSerializer.Serialize(request, JsonOptions);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
         using HttpResponseMessage response = await HttpClient.PostAsync(
@@ -33,10 +33,61 @@ public sealed class ApiService
             return loginResponse;
         }
 
-        // This protects the UI from a malformed or unexpected server response.
         return new LoginResponse
         {
             Success = false,
+            Message = response.IsSuccessStatusCode
+                ? "The server returned an invalid response."
+                : $"The server returned HTTP {(int)response.StatusCode}."
+        };
+    }
+
+    public async Task<FileReadResponse> ReadFileAsync(Stream fileStream, string fileName, string contentType, CancellationToken cancellationToken = default)
+    {
+        using var content = new MultipartFormDataContent();
+        using var streamContent = new StreamContent(fileStream);
+        streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+        content.Add(streamContent, "file", fileName);
+
+        using HttpResponseMessage response = await HttpClient.PostAsync("api/read-file", content, cancellationToken);
+        FileReadResponse? result = await response.Content.ReadFromJsonAsync<FileReadResponse>(cancellationToken: cancellationToken);
+
+        if (result is not null)
+        {
+            return result;
+        }
+
+        return new FileReadResponse
+        {
+            Success = false,
+            FileName = fileName,
+            Content = string.Empty,
+            Message = response.IsSuccessStatusCode
+                ? "The server returned an invalid response."
+                : $"The server returned HTTP {(int)response.StatusCode}."
+        };
+    }
+
+    public async Task<TranscriptionResponse> TranscribeAudioAsync(Stream fileStream, string fileName, string contentType, CancellationToken cancellationToken = default)
+    {
+        using var content = new MultipartFormDataContent();
+        using var streamContent = new StreamContent(fileStream);
+        streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+        content.Add(streamContent, "file", fileName);
+
+        using HttpResponseMessage response = await HttpClient.PostAsync("api/transcribe-audio", content, cancellationToken);
+        TranscriptionResponse? result = await response.Content.ReadFromJsonAsync<TranscriptionResponse>(cancellationToken: cancellationToken);
+
+        if (result is not null)
+        {
+            return result;
+        }
+
+        return new TranscriptionResponse
+        {
+            Success = false,
+            FileName = fileName,
+            Transcript = string.Empty,
             Message = response.IsSuccessStatusCode
                 ? "The server returned an invalid response."
                 : $"The server returned HTTP {(int)response.StatusCode}."
